@@ -1,31 +1,8 @@
-pipeline {
-  environment {
-    imagename = "indeximage:latest"
-    registryCredential = 'budagamnaveen'
-    dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Building image') {
-      steps{
-        echo "Started building"
-        script {
-          dockerImage = docker.build imagename
+node {
+    checkout scm
+    docker.withRegistry('https://registry.example.com') {
+        docker.image('my-custom-image').inside {
+            sh 'make test'
         }
-        echo "Ended building"
-      }
     }
-    stage('Deploy Image') {
-      steps{
-        echo "Started Deploying"
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
-          }
-        }
-        echo "Ended Deploying"
-      }
-    }
-  }
 }
