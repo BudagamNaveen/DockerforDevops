@@ -1,12 +1,26 @@
-pipeline{
+
+pipeline {
+  environment {
+    imagename = "indeximage:latest"
+    registryCredential = 'budagamnaveen'
+    dockerImage = ''
+  }
   agent any
-  stages{
-    stage('compile')
-    {
+  stages {
+    stage('Building image') {
       steps{
         script {
-          docker build -t naveenimageapp:1.0 Dockerfile
-          docker push naveenimageapp:1.0
+          dockerImage = docker.build imagename
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push("$BUILD_NUMBER")
+             dockerImage.push('latest')
+          }
         }
       }
     }
