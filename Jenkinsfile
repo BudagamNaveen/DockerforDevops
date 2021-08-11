@@ -1,8 +1,10 @@
 node {
     checkout scm
-    docker.withRegistry('https://registry.example.com') {
-        docker.image('my-custom-image').inside {
-            sh 'make test'
-        }
+
+    docker.withRegistry('https://hub.docker.com/repositories', 'budagamnaveen') {
+
+        def customImage = docker.build("indeximagenaveen:${env.BUILD_ID}")
+        /* Push the container to the custom Registry */
+        customImage.push()
     }
 }
