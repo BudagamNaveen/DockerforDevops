@@ -1,7 +1,5 @@
 pipeline {
   environment {
-    imagename = "indeximage:latest"
-    registryCredential = 'budagamnaveen'
     dockerImage = ''
   }
   agent any
@@ -10,7 +8,7 @@ pipeline {
       steps{
         echo "Started building"
         script {
-          dockerImage = docker.build imagename
+          dockerImage = docker.build 'indeximage'
         }
         echo "Ended building"
       }
@@ -19,7 +17,7 @@ pipeline {
       steps{
         echo "Started Deploying"
         script {
-          docker.withRegistry( '', registryCredential ) {
+          docker.withRegistry( '', 'budagamnaveen' ) {
             dockerImage.push("$BUILD_NUMBER")
              dockerImage.push('latest')
           }
