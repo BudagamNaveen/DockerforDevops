@@ -1,4 +1,3 @@
-
 pipeline {
   environment {
     imagename = "indeximage:latest"
