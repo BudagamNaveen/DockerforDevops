@@ -3,7 +3,7 @@ node {
 
     docker.withRegistry('https://hub.docker.com/repositories', 'budagamnaveen') {
 
-        def customImage = docker.build("indeximagenaveen:${env.BUILD_ID}")
+        def customImage = docker.build("budagamnaveen/indeximagenaveen")
         /* Push the container to the custom Registry */
         customImage.push()
     }
